@@ -1,0 +1,82 @@
+var bnum = 15
+var ns = 50
+var bspeed1 = 8
+var bspeed2 = 5
+var bw = 15
+let bees = []
+let stars = []
+
+function setup() {
+  createCanvas(500, 500);
+  for (var i = 0; i < bnum; i++) {
+    bees[i] = new bee();
+  }
+}
+
+
+function draw() {
+    background(14, 12, 84);
+    noStroke();
+    stroke(255);
+    
+    //stars
+    for (var i=0; i < 400; i++) {
+    //randomly sized stars
+        strokeWeight(random(1, 3));
+    //randomly placed stars
+        point(random(width), random(height)); 
+  }
+  
+    for (var k = 0; k < bnum; k++) {
+      bees[k].move();
+      bees[k].display();
+      bees[k].barrier();
+      bees[k].net();
+    }
+}
+
+function bee() {
+  this.x = random(0, width);
+  this.y = random(0, height);
+  this.xmove = random (-bspeed2,bspeed1);
+  this.ymove = random (-bspeed1,bspeed2);
+  
+  
+  this.display = function(){
+  
+  //double-stacked wings
+  ellipseMode(RADIUS);
+  noStroke();
+  fill(171, 240, 255);
+  ellipse(this.x+10, this.y-5,bw,8);
+  ellipse(this.x-10, this.y+5,bw,8);
+  ellipse(this.x+10, this.y+5,bw,8);
+  ellipse(this.x-10, this.y-5,bw,8);
+
+  
+  //body
+  fill(255, 244, 61);
+  angleMode(DEGREES);
+  ellipse (this.x, this.y, 15, 20);
+  stroke(0);
+  strokeWeight(5);
+  line(this.x-10, this.y-5, this.x+10, this.y-5);
+  line(this.x-10, this.y+5, this.x+10, this.y+5);
+  }
+  
+  this.move = function() {
+    this.x = this.x + this.xmove;
+    this.y = this.y + this.ymove;
+    
+  this.barrier = function() {
+    if (this.x >= width || this.x <= 0) {
+      this.xmove = -this.xmove;
+    } else if (this.y >= height || this.y <= 0) {
+      this.ymove = -this.ymove;
+    }
+  }
+  
+  this.net = function() {
+  }
+  } 
+}
